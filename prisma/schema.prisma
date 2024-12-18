@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model District {
+  district_id   Int    @id @default(autoincrement())
+  district_name String @db.VarChar(120)
+  cities        City[]
+}
+
+model City {
+  city_id      Int      @id @default(autoincrement())
+  city_name    String   @db.VarChar(120)
+  district_id  Int
+  district     District @relation(fields: [district_id], references: [district_id])
+  stations     Station[]
+}
+
+model Station {
+  station_id    Int      @id @default(autoincrement())
+  station_name  String   @db.VarChar(64)
+  longitude     Decimal  @db.Decimal(12, 8)
+  latitude      Decimal  @db.Decimal(12, 8)
+  panorama      String?  @db.Text
+  information   String?  @db.Text
+  city_id       Int
+  city          City     @relation(fields: [city_id], references: [city_id])
+  soil_measurements SoilMeasurement[]
+  climate_measurements ClimateMeasurement[]
+  photos        Photo[]
+  devices       Device[]
+}
+
+model SoilAttribute {
+  soil_attribute_id   Int    @id @default(autoincrement())
+  soil_attribute_name String @db.VarChar(64)
+  soil_attribute_description String @db.VarChar(150)
+  soil_attribute_unit String @db.VarChar(64)
+  soil_measurements   SoilMeasurement[]
+}
+
+model SoilMeasurement {
+  soil_measurement_id Int         @id @default(autoincrement())
+  station_id          Int
+  station             Station    @relation(fields: [station_id], references: [station_id])
+  soil_attribute_id   Int
+  soil_attribute      SoilAttribute @relation(fields: [soil_attribute_id], references: [soil_attribute_id])
+  date_time           DateTime    @db.Timestamp
+    value             Float      
+}
+
+model Photo {
+  photos_id  Int    @id @default(autoincrement())
+  station_id Int
+  station    Station @relation(fields: [station_id], references: [station_id])
+  photo      String  @db.VarChar(600)
+}
+
+model Device {
+  device_id      Int      @id @default(autoincrement())
+  station_id     Int
+  station        Station  @relation(fields: [station_id], references: [station_id])
+  device_name    String   @db.VarChar(64)
+  device_company String   @db.VarChar(64)
+  installation_date DateTime @db.Timestamp
+  device_info    String   @db.Text
+}
+
+model ClimateMeasurement {
+  climate_measurement_id Int              @id @default(autoincrement())
+  station_id             Int
+  station                Station           @relation(fields: [station_id], references: [station_id])
+  climate_attribute_id   Int
+  climate_attribute      ClimateAttribute  @relation(fields: [climate_attribute_id], references: [climate_attribute_id])
+  date_time              DateTime         @db.Timestamp
+  value                  Float       
+}
+
+model ClimateAttribute {
+  climate_attribute_id    Int    @id @default(autoincrement())
+  climate_attribute_name  String @db.VarChar(64)
+  climate_attribute_description String @db.VarChar(150)
+  climate_attribute_unit  String @db.VarChar(64)
+  climate_measurements    ClimateMeasurement[]
+}
+
+model User {
+  user_id      Int    @id @default(autoincrement())
+  password     String @db.VarChar(100)
+  first_name   String @db.VarChar(150)
+  last_name    String @db.VarChar(150)
+  phone_number String @db.VarChar(20)
+  email        String @db.VarChar(150)
+  role         String? @db.VarChar(10) // Nullable field
+}
