@@ -13,7 +13,8 @@
   "type": "module",
   "scripts": {
     "start": "nodemon index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "migrate:deploy": "npx prisma migrate deploy"
   },
   "keywords": [],
   "author": "",
