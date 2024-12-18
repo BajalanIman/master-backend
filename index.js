@@ -7,7 +7,13 @@ const app = express();
 const PORT = 8900;
 const prisma = new PrismaClient();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://master-frontend-17-12-2024.netlify.app",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 app.use(compression()); //for optimization
 app.use(express.static("public"));
 app.use(express.json({ limit: "100mb" }));
