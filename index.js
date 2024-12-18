@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 
 app.use(
   cors({
-    origin: "https://master-frontend-17-12-2024.netlify.app",
+    origin: "https://master-frontend-17-12-2024fhf.netlify.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
