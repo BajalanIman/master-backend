@@ -12,9 +12,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon index.js",
     "dev": "nodemon index.js",
-    "migrate:deploy": "npx prisma migrate deploy"
+    "migrate:deploy": "npx prisma migrate deploy",
+    "start": "npm run migrate:deploy && node index.js"
   },
   "keywords": [],
   "author": "",
