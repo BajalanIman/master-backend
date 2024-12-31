@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import compression from "compression"; //for optimization
+import compression from "compression"; //for optimizations
 import { PrismaClient } from "@prisma/client";
 
 const app = express();
